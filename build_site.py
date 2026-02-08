@@ -71,22 +71,26 @@ class SiteBuilder:
             if a['category'] == article['category'] and a['id'] != article['id']
         ][:3]
         
-        # Render template
+        # Safety check for missing data
+        schema_data = article.get('schema', {})
+        if not isinstance(schema_data, (dict, list)):
+            schema_data = {}
+            
         html = template.render(
             article=article,
-            title=article['title'],
-            meta_description=article['meta_description'],
-            keywords=', '.join(article['keywords']),
-            author=article['author'],
+            title=article.get('title', 'Untitled'),
+            meta_description=article.get('meta_description', ''),
+            keywords=', '.join(article.get('keywords', [])),
+            author=article.get('author', BlogConfig.SITE_AUTHOR),
             article_url=f"{BlogConfig.SITE_URL}/posts/{article['slug']}.html",
-            featured_image=article['featured_image'],
-            published_date=article['published_date'],
-            published_date_formatted=self.format_date(article['published_date']),
-            reading_time=self.calculate_reading_time(article['content']),
-            category=article['category'],
-            tags=article['tags'],
-            content=article['content'],
-            schema_json=json.dumps(article['schema'], ensure_ascii=False),
+            featured_image=article.get('featured_image', ''),
+            published_date=article.get('published_date', ''),
+            published_date_formatted=self.format_date(article.get('published_date', '')),
+            reading_time=self.calculate_reading_time(article.get('content', '')),
+            category=article.get('category', 'General'),
+            tags=article.get('tags', []),
+            content=article.get('content', ''),
+            schema_json=json.dumps(schema_data, ensure_ascii=False),
             site_name=BlogConfig.SITE_NAME,
             site_description=BlogConfig.SITE_DESCRIPTION,
             current_year=datetime.now().year,
