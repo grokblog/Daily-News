@@ -9,7 +9,11 @@ tomli==2.0.1
 fastapi
 uvicorn
 pydantic
+pydantic-settings
 websockets
 markdown
 mdit-py-plugins
 python-multipart
+httpx
+sqlmodel
+uvloop; platform_system != 'Windows'
