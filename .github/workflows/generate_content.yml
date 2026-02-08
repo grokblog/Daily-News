@@ -1,12 +1,12 @@
-name: Daily Blog Generation (Cloud Gateway)
+name: Set & Forget Daily Blog (Cloud)
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Runs at 06:00 UTC daily
-  workflow_dispatch:      # Manual trigger
+    - cron: '30 22 * * *'  # Jalan jam 5:30 pagi WIB (22:30 UTC)
+  workflow_dispatch:      # Bisa diklik manual di tab Actions
 
 jobs:
-  generate-and-deploy:
+  automation:
     runs-on: ubuntu-latest
     
     steps:
@@ -17,44 +17,56 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -r requirements.txt
 
-    - name: 🚀 Setup Cloud Gateway (Inject Cookies)
+    - name: 🚀 Setup Cloud Config
       env:
-        SETTING_TOML: ${{ secrets.SETTING_TOML }} # User must paste setting.toml content here
+        SETTING_TOML: ${{ secrets.SETTING_TOML }} 
       run: |
         mkdir -p data
         echo "$SETTING_TOML" > data/setting.toml
-        echo "✅ Gateway Configured with Cookies"
+        echo "✅ Gateway Configured"
 
-    - name: 🌐 Start Grok Gateway Service
+    - name: 🌐 Start Grok Gateway
       run: |
+        # Jalankan main.py di background
         nohup python main.py > gateway.log 2>&1 &
-        echo "⏳ Waiting for Gateway to start..."
-        sleep 10
-        # Check if running
-        curl -s http://localhost:8017/health || echo "⚠️ Gateway might not be ready yet"
+        echo "⏳ Menunggu Gateway Login (30 detik)..."
+        
+        # Loop untuk cek apakah gateway sudah ready
+        for i in {1..10}; do
+          if curl -s http://localhost:8017/health; then
+            echo "✅ Gateway READY!"
+            break
+          fi
+          echo "Dormant... mencoba lagi dalam 3 detik ($i/10)"
+          sleep 3
+        done
+        
+        # Tampilkan logs sedikit untuk tracking
+        tail -n 20 gateway.log
 
-    - name: 📝 Generate Content
+    - name: 📝 Auto-Generate Content
       env:
-        # Force local gateway usage (since we are running it inside the action container)
         USE_LOCAL_GATEWAY: "true"
         GROK_API_URL: "http://localhost:8017/v1/chat/completions"
       run: |
+        # Generate 3 artikel baru
         python blog_generator.py --count 3 || (cat gateway.log && exit 1)
         
-    - name: 🏗️ Build Static Site
+    - name: 🏗️ Build Site
       run: |
         python build_site.py
 
-    - name: 📤 Commit and Push Changes
+    - name: 📤 Push New Content
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add public/
-        git commit -m "Auto-generate content from Cloud Gateway [skip ci]" || echo "No changes to commit"
+        git commit -m "Set & Forget: Auto Update $(date)" || echo "No changes"
         git push
