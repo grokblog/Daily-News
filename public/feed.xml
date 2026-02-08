@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Viral News Hub</title>
+    <link>https://yoursite.com</link>
+    <description>Latest & Viral News from Around the World</description>
+    <language>en</language>
+    <lastBuildDate>Sun, 08 Feb 2026 11:15:37 </lastBuildDate>
+    <atom:link href="https://yoursite.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Boom Triggers Shortages Across Economy</title>
+      <link>https://yoursite.com/posts/ai-boom-causing-shortages-everywhere.html</link>
+      <description>Tech&apos;s $700 billion AI spending spree creates unprecedented boom but sparks shortages in electricians, smartphones, power, and funding elsewhere.</description>
+      <pubDate>Sun, 08 Feb 2026 11:09:44 </pubDate>
+      <guid>https://yoursite.com/posts/ai-boom-causing-shortages-everywhere.html</guid>
+      <category>technology</category>
+      <enclosure url="/images/ai-boom-causing-shortages-everywhere-1770523784.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Weight-Loss Price Wars: How They&apos;re Shattering Big Pharma&apos;s Model</title>
+      <link>https://yoursite.com/posts/weight-loss-price-wars-breaking-big-pharma-model.html</link>
+      <description>The weight-loss drug market is in chaos as prices plummet from $1,000+ to under $200 monthly, forcing giants like Novo Nordisk and Eli Lilly to rethink their strategies amid compounding rivals and policy shifts.</description>
+      <pubDate>Sun, 08 Feb 2026 11:09:44 </pubDate>
+      <guid>https://yoursite.com/posts/weight-loss-price-wars-breaking-big-pharma-model.html</guid>
+      <category>business</category>
+      <enclosure url="/images/weight-loss-price-wars-breaking-big-pharma-model-1770523784.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Next-Gen Weight-Loss Drugs Promise Bigger Results in 2026</title>
+      <link>https://yoursite.com/posts/next-gen-weight-loss-drugs-2026-breakthroughs.html</link>
+      <description>As 2026 unfolds, revolutionary weight-loss medications are set to transform obesity care, offering greater effectiveness and convenience than ever before.</description>
+      <pubDate>Sun, 08 Feb 2026 10:54:40 </pubDate>
+      <guid>https://yoursite.com/posts/next-gen-weight-loss-drugs-2026-breakthroughs.html</guid>
+      <category>health</category>
+      <enclosure url="/images/next-gen-weight-loss-drugs-2026-breakthroughs-1770522880.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Apple&apos;s 2026 Revolution: iPhone 17e, M5 Macs, and Bold AI Moves</title>
+      <link>https://yoursite.com/posts/apple-2026-lineup-iphone-17e-m5-macs-ai-updates.html</link>
+      <description>As 2026 unfolds, Apple is gearing up for one of its most ambitious years yet. From the imminent iPhone 17e reveal to M5-powered MacBook Pros and smarter AI features, here&apos;s what US consumers can expect from the tech giant.</description>
+      <pubDate>Sun, 08 Feb 2026 09:27:54 </pubDate>
+      <guid>https://yoursite.com/posts/apple-2026-lineup-iphone-17e-m5-macs-ai-updates.html</guid>
+      <category>technology</category>
+      <enclosure url="/images/apple-2026-lineup-iphone-17e-m5-macs-ai-updates-1770517674.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Google&apos;s Iconic &apos;G&apos; Evolution: Redefining News in the AI Age</title>
+      <link>https://yoursite.com/posts/google-iconic-g-logo-evolution-news-ai-age.html</link>
+      <description>Google&apos;s brighter, gradient &apos;G&apos; icon symbolizes more than a redesign—it&apos;s a bold step into AI-powered news consumption that&apos;s changing how millions of Americans stay informed every day.</description>
+      <pubDate>Sun, 08 Feb 2026 09:27:02 </pubDate>
+      <guid>https://yoursite.com/posts/google-iconic-g-logo-evolution-news-ai-age.html</guid>
+      <category>technology</category>
+      <enclosure url="https://yoursite.com/images/google-iconic-g-logo-evolution-news-ai-age-1770517622.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Scientists Uncover Hidden Structures Deep Inside Earth Shaping Our Magnetic Field</title>
+      <link>https://yoursite.com/posts/scientists-discover-deep-earth-structures-magnetic-field.html</link>
+      <description>Deep beneath our feet, colossal hot rock structures are quietly dictating the behavior of Earth&apos;s magnetic field. Scientists have uncovered evidence that these mantle anomalies directly impact the liquid iron flow in the core.</description>
+      <pubDate>Sun, 08 Feb 2026 09:26:54 </pubDate>
+      <guid>https://yoursite.com/posts/scientists-discover-deep-earth-structures-magnetic-field.html</guid>
+      <category>science</category>
+      <enclosure url="https://yoursite.com/images/scientists-discover-deep-earth-structures-magnetic-field-1770517614.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>Revolutionary Weight-Loss Drugs: What&apos;s New and Stronger in 2026</title>
+      <link>https://yoursite.com/posts/revolutionary-weight-loss-drugs-2026-breakthroughs.html</link>
+      <description>2026 marks a pivotal year for weight-loss innovation as next-generation drugs target multiple hormones for dramatic, sustained results—potentially doubling the effectiveness of today&apos;s popular options like Wegovy and Zepbound.</description>
+      <pubDate>Sun, 08 Feb 2026 09:26:54 </pubDate>
+      <guid>https://yoursite.com/posts/revolutionary-weight-loss-drugs-2026-breakthroughs.html</guid>
+      <category>health</category>
+      <enclosure url="https://yoursite.com/images/revolutionary-weight-loss-drugs-2026-breakthroughs-1770517614.jpg" type="image/jpeg" />
+    </item>
+  </channel>
+</rss>

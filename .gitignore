@@ -1,0 +1,25 @@
+# System files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+Thumbs.db
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# Content & Cache
+.cache/
+data/
+
+# Optional: Ignore public if you build on server
+# But if you generate locally, keep it. 
+# For this setup (GitHub Actions), we usually ignore public/posts but keep structure.
+# efficient strategy: Ignore public/ but allow assets
+# public/
+
+# Project specific
+*.log

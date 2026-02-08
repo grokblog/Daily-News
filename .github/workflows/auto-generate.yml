@@ -1,0 +1,95 @@
+name: Auto Generate Blog Content
+
+on:
+  # Run every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      article_count:
+        description: 'Number of articles to generate'
+        required: false
+        default: '5'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Generate blog content
+        env:
+          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+          GROK_API_URL: ${{ secrets.GROK_API_URL }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python blog_generator.py --count ${{ github.event.inputs.article_count }}
+          else
+            python blog_generator.py
+          fi
+      
+      - name: Build static site
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          python build_site.py
+      
+      - name: Commit generated content
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add public/ data/posts/
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-generate blog content [$(date +'%Y-%m-%d %H:%M:%S')]"
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          cname: ${{ secrets.CUSTOM_DOMAIN }}
+      
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "✅ Blog content generated and deployed successfully!"
+          echo "Site URL: ${{ secrets.SITE_URL }}"
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Blog generation failed. Check the logs for details."

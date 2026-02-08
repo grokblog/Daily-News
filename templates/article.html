@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ keywords }}">
+    <meta name="author" content="{{ author }}">
+    <meta name="robots" content="max-image-preview:large">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ article_url }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:image" content="{{ featured_image }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ article_url }}">
+    <meta property="twitter:title" content="{{ title }}">
+    <meta property="twitter:description" content="{{ meta_description }}">
+    <meta property="twitter:image" content="{{ featured_image }}">
+
+    <title>{{ title }} - {{ site_name }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {{ schema_json | safe }}
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+</head>
+
+<body class="article-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="/" class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="logo-icon">
+                        <path d="M6 6L14 26H18L26 6" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <circle cx="26" cy="26" r="3" fill="#ef4444" />
+                    </svg>
+                    <span class="logo-text">{{ site_name }}</span>
+                </a>
+
+                <div class="nav-menu">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/category/technology.html" class="nav-link">Technology</a>
+                    <a href="/category/business.html" class="nav-link">Business</a>
+                    <a href="/category/entertainment.html" class="nav-link">Entertainment</a>
+                    <a href="/category/sports.html" class="nav-link">Sports</a>
+                    <a href="/category/health.html" class="nav-link">Health</a>
+                    <a href="/category/science.html" class="nav-link">Science</a>
+                </div>
+
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M10 2V4M10 16V18M18 10H16M4 10H2M15.657 4.343L14.243 5.757M5.757 14.243L4.343 15.657M15.657 15.657L14.243 14.243M5.757 5.757L4.343 4.343"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Header -->
+    <article class="article">
+        <header class="article-header">
+            <div class="container-narrow">
+                <div class="article-meta">
+                    <a href="/category/{{ category }}.html" class="category-badge">{{ category }}</a>
+                    <time datetime="{{ published_date }}" class="article-date">{{ published_date_formatted }}</time>
+                </div>
+
+                <h1 class="article-title">{{ title }}</h1>
+
+                <div class="article-author">
+                    <div class="author-info">
+                        <div class="author-avatar">
+                            <img src="/assets/images/author-avatar.jpg" alt="{{ author }}">
+                        </div>
+                        <div class="author-details">
+                            <span class="author-name">{{ author }}</span>
+                            <span class="reading-time">{{ reading_time }} min read</span>
+                        </div>
+                    </div>
+
+                    <div class="article-share">
+                        <button class="share-btn" data-share="facebook" aria-label="Share on Facebook">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M18 10.049C18 5.603 14.418 2 10 2s-8 3.603-8 8.049c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V10.05h2.03V8.275c0-2.017 1.195-3.131 3.022-3.131.875 0 1.79.157 1.79.157v1.98h-1.009c-.994 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H11.25V18c3.824-.604 6.75-3.934 6.75-7.951z" />
+                            </svg>
+                        </button>
+                        <button class="share-btn" data-share="twitter" aria-label="Share on Twitter">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                        </button>
+                        <button class="share-btn" data-share="whatsapp" aria-label="Share on WhatsApp">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M10.002 0h-.004C4.476 0 0 4.477 0 10.002c0 1.76.456 3.463 1.319 4.957L.458 19.5l4.686-1.23A9.958 9.958 0 0010.002 20C15.528 20 20 15.523 20 10.002 20 4.477 15.528 0 10.002 0zm5.823 14.168c-.237.667-1.398 1.222-1.948 1.299-.462.064-.462.348-2.94-.614-2.477-1.047-4.047-3.597-4.169-3.763-.122-.166-.997-1.328-.997-2.533 0-1.205.63-1.797.853-2.042.223-.245.487-.307.65-.307.163 0 .325.002.467.009.15.007.35-.057.548.417.198.474.677 1.652.736 1.771.059.119.099.258.02.42-.079.162-.119.263-.237.404-.119.141-.25.315-.357.423-.119.119-.242.247-.104.485.138.237.614 1.013 1.319 1.641.906.807 1.67 1.057 1.907 1.176.237.119.375.099.513-.059.138-.158.59-.69.748-.928.158-.237.316-.198.534-.119.218.079 1.384.653 1.622.772.237.119.395.178.454.277.059.099.059.573-.178 1.24z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Featured Image -->
+        <div class="featured-image">
+            <img src="{{ featured_image }}" alt="{{ title }}" loading="lazy">
+        </div>
+
+        <!-- Article Content -->
+        <div class="article-content">
+            <div class="container-narrow">
+                {{ content | safe }}
+            </div>
+        </div>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+            <div class="container-narrow">
+                <div class="article-tags">
+                    {% for tag in tags %}
+                    <a href="/tag/{{ tag }}.html" class="tag">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+
+                <div class="article-share-footer">
+                    <span class="share-label">Share this article:</span>
+                    <div class="share-buttons">
+                        <button class="share-btn-large facebook" data-share="facebook">
+                            <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M18 10.049C18 5.603 14.418 2 10 2s-8 3.603-8 8.049c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V10.05h2.03V8.275c0-2.017 1.195-3.131 3.022-3.131.875 0 1.79.157 1.79.157v1.98h-1.009c-.994 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H11.25V18c3.824-.604 6.75-3.934 6.75-7.951z" />
+                            </svg>
+                            Facebook
+                        </button>
+                        <button class="share-btn-large twitter" data-share="twitter">
+                            <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                            Twitter
+                        </button>
+                        <button class="share-btn-large whatsapp" data-share="whatsapp">
+                            <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M10.002 0h-.004C4.476 0 0 4.477 0 10.002c0 1.76.456 3.463 1.319 4.957L.458 19.5l4.686-1.23A9.958 9.958 0 0010.002 20C15.528 20 20 15.523 20 10.002 20 4.477 15.528 0 10.002 0zm5.823 14.168c-.237.667-1.398 1.222-1.948 1.299-.462.064-.462.348-2.94-.614-2.477-1.047-4.047-3.597-4.169-3.763-.122-.166-.997-1.328-.997-2.533 0-1.205.63-1.797.853-2.042.223-.245.487-.307.65-.307.163 0 .325.002.467.009.15.007.35-.057.548.417.198.474.677 1.652.736 1.771.059.119.099.258.02.42-.079.162-.119.263-.237.404-.119.141-.25.315-.357.423-.119.119-.242.247-.104.485.138.237.614 1.013 1.319 1.641.906.807 1.67 1.057 1.907 1.176.237.119.375.099.513-.059.138-.158.59-.69.748-.928.158-.237.316-.198.534-.119.218.079 1.384.653 1.622.772.237.119.395.178.454.277.059.099.059.573-.178 1.24z" />
+                            </svg>
+                            WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </article>
+
+    <!-- Related Articles -->
+    <section class="related-articles">
+        <div class="container">
+            <h2 class="section-title">Related Articles</h2>
+            <div class="articles-grid">
+                <!-- Related articles will be inserted here by build script -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">{{ site_name }}</h3>
+                    <p class="footer-description">{{ site_description }}</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="/category/technology.html">Technology</a></li>
+                        <li><a href="/category/business.html">Business</a></li>
+                        <li><a href="/category/entertainment.html">Entertainment</a></li>
+                        <li><a href="/category/sports.html">Sports</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M18 10.049C18 5.603 14.418 2 10 2s-8 3.603-8 8.049c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V10.05h2.03V8.275c0-2.017 1.195-3.131 3.022-3.131.875 0 1.79.157 1.79.157v1.98h-1.009c-.994 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H11.25V18c3.824-.604 6.75-3.934 6.75-7.951z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; {{ current_year }} {{ site_name }}. All rights reserved.</p>
+                <div class="footer-links-bottom">
+                    <a href="/privacy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

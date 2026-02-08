@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console - Grok for Learning Only</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            dark: { 950: '#05050a', 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a25', 600: '#22222f', 500: '#2a2a38' },
+            accent: { DEFAULT: '#06b6d4', light: '#22d3ee', dark: '#0891b2' },
+            success: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #0a0a0f;
+      color: #e5e7eb;
+      min-height: 100vh;
+    }
+
+    /* Glass effects */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-header {
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Stat cards */
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(6, 182, 212, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(6, 182, 212, 0.1);
+    }
+
+    /* Inputs */
+    .dark-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+      transition: all 0.2s ease;
+    }
+
+    .dark-input:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+      outline: none;
+    }
+
+    .dark-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Table */
+    .dark-table {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .dark-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: #9ca3af;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .dark-table tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background 0.2s ease;
+    }
+
+    .dark-table tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      transition: all 0.2s ease;
+      color: #9ca3af;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      color: #06b6d4;
+    }
+
+    /* Modal */
+    .dark-modal-overlay {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+    }
+
+    .dark-modal {
+      background: #12121a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Badges */
+    .badge-active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-expired {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-limited {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-unused {
+      background: rgba(107, 114, 128, 0.15);
+      color: #9ca3af;
+      border-color: rgba(107, 114, 128, 0.3);
+    }
+
+    .badge-sso {
+      background: rgba(59, 130, 246, 0.15);
+      color: #3b82f6;
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-super {
+      background: rgba(168, 85, 247, 0.15);
+      color: #a855f7;
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Animations */
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Sticky right column for dark mode */
+    .sticky-right {
+      position: sticky;
+      right: 0;
+      background: #0a0a0f;
+      z-index: 10;
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Settings cards */
+    .settings-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+    }
+
+    /* Icon buttons */
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+      height: 2rem;
+      width: 2rem;
+      color: #9ca3af;
+    }
+
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+    }
+
+    /* Storage badge tooltip (disabled hover, click to see) */
+    .storage-badge[title]:hover::after,
+    .storage-badge[title]:hover::before {
+      display: none !important;
+    }
+
+    /* Config labels and inputs */
+    .cfg-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #9ca3af;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .cfg-input {
+      display: flex;
+      height: 2.25rem;
+      width: 100%;
+      border-radius: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      color: #e5e7eb;
+    }
+
+    .cfg-input:focus {
+      border-color: #06b6d4;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+    }
+
+    .help-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.875rem;
+      height: 0.875rem;
+      border-radius: 9999px;
+      border: 1px solid #6b7280;
+      color: #6b7280;
+      cursor: help;
+      font-size: 10px;
+    }
+
+    /* Toast notifications */
+    .toast {
+      animation: slideUp 0.3s ease-out;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title tooltips */
+    [title]:hover::after {
+      background: #1a1a25;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+    }
+
+    [title]:hover::before {
+      border-top-color: #1a1a25;
+    }
+
+    /* Toggle switch - modern cyan style */
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-switch.active {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-switch.active::after {
+      left: 22px;
+    }
+
+    /* Readonly inputs - visible text */
+    .readonly-input,
+    input[readonly],
+    input:disabled {
+      background: rgba(255, 255, 255, 0.02) !important;
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      color: #6b7280 !important;
+      cursor: not-allowed;
+    }
+
+    select,
+    .cfg-input,
+    input,
+    textarea {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: #e5e7eb !important;
+    }
+
+    select:focus,
+    .cfg-input:focus,
+    input:focus,
+    textarea:focus {
+      border-color: #06b6d4 !important;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.15) !important;
+      outline: none !important;
+    }
+
+    /* Toggle Tab Navigation */
+    .tab-toggle-container {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .tab-toggle-wrapper {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0.75rem;
+      padding: 0.25rem;
+      gap: 0.25rem;
+    }
+
+    .tab-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #9ca3af;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-toggle-btn:hover {
+      color: #e5e7eb;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-toggle-btn.active {
+      color: white;
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+    }
+
+    .tab-toggle-btn svg {
+      opacity: 0.7;
+    }
+
+    .tab-toggle-btn.active svg {
+      opacity: 1;
+    }
+
+    .content-area {
+      width: 100%;
+      min-height: calc(100vh - 180px);
+    }
+
+    /* Notes section */
+    .notes-card {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+
+    .notes-card h4 {
+      color: #06b6d4;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .notes-list {
+      width: 100%;
+    }
+
+    .notes-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .notes-table tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .notes-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .notes-table td {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.8125rem;
+      color: #9ca3af;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+
+    .notes-table td:first-child {
+      width: 140px;
+      color: #06b6d4;
+      font-weight: 500;
+      white-space: nowrap;
+      padding-right: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .notes-table td:first-child {
+        width: 100px;
+        font-size: 0.75rem;
+      }
+
+      .notes-table td {
+        font-size: 0.75rem;
+      }
+    }
+
+    /* Responsive header */
+    @media (max-width: 768px) {
+      .header-title {
+        font-size: 1rem;
+      }
+
+      .sidebar-layout {
+        flex-direction: column;
+      }
+
+      .sidebar-nav {
+        width: 100%;
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding: 0.5rem;
+      }
+
+      .sidebar-nav-item {
+        flex-shrink: 0;
+        border-left: none !important;
+        border-bottom: 3px solid transparent;
+      }
+
+      .sidebar-nav-item.active {
+        border-bottom-color: #06b6d4;
+      }
+    }
+
+
+    /* Better spacing and sizing */
+    .settings-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+
+    .settings-card h3 {
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Fix select dropdown arrow */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.5rem !important;
+    }
+
+    /* Better button styling */
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 10px rgba(6, 182, 212, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+    }
+
+    /* Header improvements */
+    .glass-header {
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Sidebar improvements */
+    .sidebar-nav {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+    }
+
+
+    /* Fix cache input buttons alignment */
+    .cache-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .cache-row input {
+      flex: 1;
+    }
+
+    .cache-row button {
+      flex-shrink: 0;
+    }
+
+    /* Badge improvements */
+    .storage-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      cursor: default;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+      .tab-toggle-wrapper {
+        width: 100%;
+      }
+
+      .tab-toggle-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+      }
+
+      .tab-toggle-btn span {
+        display: none;
+      }
+
+      .tab-toggle-btn svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .stat-card {
+        padding: 0.75rem;
+      }
+
+      .stat-card h3 {
+        font-size: 1rem;
+      }
+
+      .settings-card {
+        padding: 1rem;
+      }
+    }
+
+
+    /* Header responsive */
+    @media (max-width: 640px) {
+      .glass-header .px-6 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .header-title {
+        font-size: 0.9rem;
+      }
+
+      .storage-badge {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="h-full antialiased">
+  <!-- Navigation bar -->
+  <header class="glass-header sticky top-0 z-50 w-full">
+    <div class="mx-auto flex h-14 max-w-7xl items-center px-6">
+      <div class="mr-4 flex items-center bg-white/5 rounded-xl px-3 py-1.5 border border-white/10">
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        </div>
+        <span
+          class="ml-2 text-xs sm:text-sm font-bold uppercase bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent tracking-wide">GROK
+          FOR LEARNING ONLY</span>
+      </div>
+      <div class="flex flex-1 items-center justify-end">
+        <div class="flex items-center gap-2">
+          <div id="storageMode" class="storage-badge" title="">
+            <svg class="h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="m21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="m3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+            <span id="storageModeText">FILE</span>
+          </div>
+          <nav class="flex items-center gap-1">
+
+            <button onclick="logout()"
+              class="inline-flex items-center justify-center text-xs text-gray-400 hover:text-white transition-colors h-7 px-2.5 gap-1.5 rounded-lg hover:bg-white/5">
+              <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Logout
+            </button>
+          </nav>
+        </div>
+      </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+    <!-- Top Tab Navigation - Toggle Style -->
+    <div class="tab-toggle-container mb-6">
+      <div class="tab-toggle-wrapper">
+        <button onclick="switchTab('tokens')" id="tabTokens" class="tab-toggle-btn active">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+          </svg>
+          <span>Token Management</span>
+        </button>
+        <button onclick="switchTab('settings')" id="tabSettings" class="tab-toggle-btn">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>Settings</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-area">
+
+      <!-- Token ManagementPanel -->
+      <div id="panelTokens">
+        <!-- Statisticscards -->
+        <div class="grid gap-4 grid-cols-2 md:grid-cols-4 mb-6">
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Total Tokens</p>
+            <h3 class="text-xl font-bold" id="statTotal">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Active Tokens</p>
+            <h3 class="text-xl font-bold text-green-600" id="statActive">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Unused Tokens</p>
+            <h3 class="text-xl font-bold text-gray-500" id="statUnused">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Rate Limited</p>
+            <h3 class="text-xl font-bold text-orange-600" id="statLimited">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Invalid Tokens</p>
+            <h3 class="text-xl font-bold text-destructive" id="statExpired">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Chat Remaining</p>
+            <h3 class="text-xl font-bold" id="statChatRemaining">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Image Remaining</p>
+            <h3 class="text-xl font-bold text-blue-600" id="statImageRemaining">-</h3>
+          </div>
+
+          <div class="stat-card p-4">
+            <p class="text-sm font-medium text-gray-400 mb-2">Video Remaining</p>
+            <h3 class="text-xl font-bold text-purple-600" id="statVideoRemaining">N/A</h3>
+          </div>
+        </div>
+
+        <!-- Token List -->
+        <div class="glass-card rounded-xl overflow-hidden">
+          <!-- Toolbar -->
+          <div class="flex items-center justify-between gap-4 p-4 border-b border-white/5">
+            <div class="flex items-center gap-3 flex-1">
+              <div class="flex items-center gap-2">
+                <select id="filterType" onchange="filterTokens()"
+                  class="h-8 px-1 text-sm rounded-md dark-input focus:outline-none w-[90px]">
+                  <option value="all">All Types</option>
+                  <option value="sso">SSO</option>
+                  <option value="ssoSuper">SuperSSO</option>
+                </select>
+                <select id="filterStatus" onchange="filterTokens()"
+                  class="h-8 px-1 text-sm rounded-md dark-input focus:outline-none w-[90px]">
+                  <option value="all">All Status</option>
+                  <option value="Unused">Unused</option>
+                  <option value="Rate Limited">Rate Limited</option>
+                  <option value="Invalid">Invalid</option>
+                  <option value="Active">Active</option>
+                </select>
+                <select id="filterTag" onchange="filterTokens()"
+                  class="h-8 px-1 text-sm rounded-md dark-input focus:outline-none w-[90px]">
+                  <option value="all">All Tags</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="refreshTokens()" class="btn-icon" title="Refresh List">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <polyline points="23 4 23 10 17 10" />
+                  <polyline points="1 20 1 14 7 14" />
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                </svg>
+              </button>
+              <div id="batchActions" class="hidden items-center gap-2">
+                <button onclick="exportSelected()" class="btn-icon" title="Export Selected">
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </button>
+                <button onclick="batchDelete()" class="btn-icon hover:bg-destructive/10 hover:text-destructive"
+                  title="Batch Delete">
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
+                  </svg>
+                </button>
+              </div>
+              <button onclick="openAddModal()"
+                class="inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring btn-primary h-8 px-3"
+                title="Add Token">
+                <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <span class="text-sm font-medium">Add</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="relative w-full overflow-auto">
+            <table class="w-full text-sm table-fixed">
+              <thead>
+                <tr class="border-b border-white/5">
+                  <th class="h-10 px-3 text-left align-middle font-medium w-12">
+                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll()"
+                      class="h-3.5 w-3.5 rounded border border-input focus:ring-1 focus:ring-ring">
+                  </th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-72">Token</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-20">Type</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-20">Status</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-20">Normal</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-20">Premium</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-32">Tags</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-40">Note</th>
+                  <th class="h-10 px-3 text-left align-middle text-sm font-medium text-gray-400 w-32">Created</th>
+                  <th class="h-10 px-3 text-center align-middle text-sm font-medium text-gray-400 w-28 sticky-right">
+                    Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tokenTableBody" class="divide-y divide-white/5">
+                <!-- DynamicFill -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" class="hidden flex flex-col items-center justify-center py-12">
+            <svg class="h-10 w-10 text-gray-400/50 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 9h6v6H9z" />
+            </svg>
+            <p class="text-sm text-gray-400">No data</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GlobalSettingsPanel -->
+      <div id="panelSettings" class="hidden">
+        <!-- Global SettingsSection -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold">Global Settings</h2>
+            <button onclick="saveGlobalSettings()"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium btn-secondary h-9 px-4 transition-colors">Save
+              Settings</button>
+          </div>
+          <div class="grid gap-4 lg:grid-cols-3">
+            <!-- System Settings -->
+            <div class="settings-card p-6">
+              <h3 class="text-sm font-semibold mb-4">System Settings</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="cfg-label">Admin Username<span class="help-icon"
+                      title="Admin console username">?</span></label>
+                  <input id="cfgAdminUser" class="cfg-input" placeholder="admin">
+                </div>
+                <div>
+                  <label class="cfg-label">Admin Password<span class="help-icon"
+                      title="Admin password, leave empty to keep current">?</span></label>
+                  <input id="cfgAdminPass" type="password" class="cfg-input" placeholder="Leave empty to keep current">
+                </div>
+                <div>
+                  <label class="cfg-label">Log Level<span class="help-icon"
+                      title="Log verbosity. DEBUG: Most detailed | INFO: General | WARNING: Warnings | ERROR: Errors only">?</span></label>
+                  <select id="cfgLogLevel" class="cfg-input">
+                    <option>DEBUG</option>
+                    <option>INFO</option>
+                    <option>WARNING</option>
+                    <option>ERROR</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Media Settings -->
+            <div class="settings-card p-6">
+              <h3 class="text-sm font-semibold mb-4">Media Settings</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="cfg-label">
+                    Image Mode
+                    <span class="help-icon"
+                      title="ReturnImagemethod。URL：Image link，SupportsImage Cache | Base64：base64Encoding，caching not supported">?</span>
+                  </label>
+                  <select id="cfgImageMode" class="cfg-input">
+                    <option value="url">URL Link</option>
+                    <option value="base64">Base64</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Service URL
+                    <span class="help-icon"
+                      title="Serverpublic accessAddress，forbuildImageURL Link（only whenImage Mode is URLwhenNeed）">?</span>
+                  </label>
+                  <input id="cfgBaseUrl" class="cfg-input" placeholder="http://localhost:8017">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="cfg-label">
+                      Image Cache (MB)
+                      <span class="help-icon"
+                        title="Image CacheMaximumcapacity（MB），auto-cleans old when exceededCache">?</span>
+                    </label>
+                    <input id="cfgImageCacheMaxSize" type="number" class="cfg-input" placeholder="500">
+                  </div>
+                  <div>
+                    <label class="cfg-label">
+                      Video Cache (MB)
+                      <span class="help-icon"
+                        title="Video CacheMaximumcapacity（MB），auto-cleans old when exceededCache">?</span>
+                    </label>
+                    <input id="cfgVideoCacheMaxSize" type="number" class="cfg-input" placeholder="1000">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cache Management -->
+            <div class="settings-card p-6">
+              <h3 class="text-sm font-semibold mb-4">Cache Management</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="text-sm font-medium text-gray-400 mb-2 block">Image Cache</label>
+                  <div class="flex gap-2">
+                    <input id="imageCacheSize" readonly
+                      class="flex h-9 flex-1 rounded-md border border-input bg-muted px-3 py-2 text-sm"
+                      placeholder="0 MB">
+                    <button onclick="clearImageCache()"
+                      class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-red-600 hover:text-white h-9 w-9 p-0 transition-colors">
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-400 mb-2 block">Video Cache</label>
+                  <div class="flex gap-2">
+                    <input id="videoCacheSize" readonly
+                      class="flex h-9 flex-1 rounded-md border border-input bg-muted px-3 py-2 text-sm"
+                      placeholder="0 MB">
+                    <button onclick="clearVideoCache()"
+                      class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-red-600 hover:text-white h-9 w-9 p-0 transition-colors">
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-400 mb-2 block">All Cache</label>
+                  <div class="flex gap-2">
+                    <input id="totalCacheSize" readonly
+                      class="flex h-9 flex-1 rounded-md border border-input bg-muted px-3 py-2 text-sm font-medium"
+                      placeholder="0 MB">
+                    <button onclick="clearCache()"
+                      class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-red-600 hover:text-white h-9 w-9 p-0 transition-colors">
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grok SettingsSection -->
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold">Grok Settings</h2>
+            <button onclick="saveGrokSettings()"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium btn-secondary h-9 px-4 transition-colors">Save
+              Settings</button>
+          </div>
+          <div class="grid gap-4 lg:grid-cols-3">
+            <!-- Basic Settings -->
+            <div class="settings-card p-6">
+              <h3 class="text-sm font-semibold mb-4">Basic Settings</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="cfg-label">
+                    API Key
+                    <span class="help-icon" title="API authentication key for secure access">?</span>
+                  </label>
+                  <input id="cfgApiKey" class="cfg-input" placeholder="">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    X Statsig ID
+                    <span class="help-icon" title="Statsig ID for experiments and analytics">?</span>
+                  </label>
+                  <div class="flex items-center gap-3">
+                    <input id="cfgStatsigId"
+                      class="flex h-9 flex-1 rounded-md border border-input dark-input px-3 py-2 text-sm"
+                      placeholder="">
+                    <label class="inline-flex items-center gap-2 cursor-pointer"
+                      title="Enabledauto-generate new ID for each request when enabled x-statsig-id">
+                      <span class="text-xs text-gray-400 whitespace-nowrap">Dynamic</span>
+                      <div class="relative">
+                        <input type="checkbox" id="cfgDynamicStatsig" class="sr-only peer">
+                        <div class="toggle-switch peer-checked:active"
+                          onclick="this.previousElementSibling.click(); this.classList.toggle('active')"></div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    FilterTags
+                    <span class="help-icon"
+                      title="NeedFilterResponseTags，multiple item(s)Tagscomma-separated。e.g.：xaiartifact,xai:tool_usage_card">?</span>
+                  </label>
+                  <input id="cfgFilteredTags" class="cfg-input" placeholder="xaiartifact,xai:tool_usage_card">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Show Thinking
+                    <span class="help-icon"
+                      title="Enabledshow model thinking process when enabled（&lt;think&gt;TagsContent）；Disabledonly return final result when disabled">?</span>
+                  </label>
+                  <select id="cfgShowThinking" class="cfg-input">
+                    <option value="true">Enabled</option>
+                    <option value="false">Disabled</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Temporary Session
+                    <span class="help-icon"
+                      title="Enabledcreate new session for each chat when enabled，no history retained；Disabledcontinue previous conversation when disabled">?</span>
+                  </label>
+                  <select id="cfgTemporary" class="cfg-input">
+                    <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Proxy Settings -->
+            <div class="settings-card p-6">
+              <h3 class="text-sm font-semibold mb-4">Proxy Settings</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="cfg-label">
+                    CF Clearance
+                    <span class="help-icon"
+                      title="Cloudflare verification cookie value to bypass CF challenge. Enter the value after cf_clearance=">?</span>
+                  </label>
+                  <input id="cfgCfClearance" class="cfg-input" placeholder="">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Proxy Url (ServiceProxy)
+                    <span class="help-icon"
+                      title="Proxy for API requests and uploads. Supports http, https, socks5. Format: socks5://user:pass@host:port">?</span>
+                  </label>
+                  <input id="cfgProxyUrl" class="cfg-input" placeholder="socks5://username:password@127.0.0.1:7890">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Proxy Pool URL (ProxypoolAPI)
+                    <span class="help-icon"
+                      title="Proxy pool API address，returns single proxy URL。Leave empty to use fixed proxy above。&#10;&#10;Return format: plain text, single proxy address&#10;Example return：socks5h://1.2.3.4:1080&#10;Supported protocols：http://, https://, socks5://, socks5h://&#10;API example：http://your-api.com/get">?</span>
+                  </label>
+                  <input id="cfgProxyPoolUrl" class="cfg-input" placeholder="http://your-proxy-api.com/get">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Proxy Pool Interval (Refreshintervalseconds)
+                    <span class="help-icon"
+                      title="Proxy pool auto-refresh interval，in seconds。recommended300-600seconds（5-10minutes）">?</span>
+                  </label>
+                  <input id="cfgProxyPoolInterval" type="number" class="cfg-input" placeholder="300">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Cache Proxy Url (CacheProxy)
+                    <span class="help-icon"
+                      title="Image/Video Cachedownload-only proxy，If not set, uses service proxy。GrokImage/video fetch API has low IP risk control，can use cheap high-traffic nodes">?</span>
+                  </label>
+                  <input id="cfgCacheProxyUrl" class="cfg-input"
+                    placeholder="socks5://username:password@127.0.0.1:7890">
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeout Settings -->
+            <div class="settings-card p-6">
+              <h3 class="text-sm font-semibold mb-4">Timeout Settings</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="cfg-label">
+                    First Response Timeout (s)
+                    <span class="help-icon"
+                      title="Max time to wait for first API response (seconds). Recommended 30-60s">?</span>
+                  </label>
+                  <input id="cfgStreamFirstResponseTimeout" type="number" class="cfg-input" placeholder="30">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Stream Chunk Timeout (s)
+                    <span class="help-icon"
+                      title="Max time between data chunks (seconds). Disconnects if exceeded. Recommended 60-180s">?</span>
+                  </label>
+                  <input id="cfgStreamChunkTimeout" type="number" class="cfg-input" placeholder="120">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    Total Timeout (s)
+                    <span class="help-icon"
+                      title="Max total generation time (seconds). For long conversations. Recommended 300-900s">?</span>
+                  </label>
+                  <input id="cfgStreamTotalTimeout" type="number" class="cfg-input" placeholder="600">
+                </div>
+                <div>
+                  <label class="cfg-label">
+                    RetryableStatuscode
+                    <span class="help-icon"
+                      title="encounterthistheseHTTPStatuscodewill auto-switchtokenretry。multiple item(s)Statuscodes separated by commas。Default：401,429&#10;commonStatuscode：401(Unauthorized), 429(Rate limit), 500(Server error), 502(Gateway error), 503(Service unavailable)">?</span>
+                  </label>
+                  <input id="cfgRetryStatusCodes" class="cfg-input" placeholder="401,429">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- configureInfo -->
+        <div class="notes-card mt-8">
+          <h4>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Important Notes
+          </h4>
+          <div class="notes-list">
+            <table class="notes-table">
+              <tr>
+                <td>X Statsig ID</td>
+                <td>Anti-bot verification parameter. When "Dynamic Statsig" is enabled, ID is auto-generated. When
+                  disabled, uses the fixed value above.</td>
+              </tr>
+              <tr>
+                <td>Dynamic Statsig</td>
+                <td>Auto-generates new ID for each request, enhances request diversity. Recommended to keep enabled.
+                </td>
+              </tr>
+              <tr>
+                <td>Service URL</td>
+                <td>Required for image/video links (e.g. https://yourdomain.com). Can be empty if using Base64 mode
+                  only.</td>
+              </tr>
+              <tr>
+                <td>Proxy Settings</td>
+                <td>Service proxy: for Grok API access. Cache proxy: for downloading media. If only service proxy is
+                  set, cache uses the same.</td>
+              </tr>
+              <tr>
+                <td>Request 403</td>
+                <td>Usually blocked by CF. Try: 1) Change server IP, 2) Configure proxy, 3) Get cf_clearance from
+                  grok.com via F12.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit InfoModal -->
+  <div id="editTagsModal" class="hidden fixed inset-0 z-50 dark-modal-overlay flex items-center justify-center p-4">
+    <div class="dark-modal rounded-xl w-full max-w-md shadow-xl">
+      <div class="flex items-center justify-between p-5 border-b border-white/5">
+        <h3 class="text-lg font-semibold">Edit Info</h3>
+        <button onclick="closeEditModal()" class="text-gray-400 hover:text-foreground transition-colors">
+          <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-400">Token</label>
+          <input id="editTokenInput" readonly
+            class="flex h-9 w-full rounded-md border border-input bg-muted px-3 py-2 text-xs font-mono" placeholder="">
+        </div>
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-400">Tags <span class="text-gray-400">(multiple
+              item(s)Tagscomma-separated)</span></label>
+          <input id="editTagsInput" placeholder="e.g., Production, Testing"
+            class="flex h-9 w-full rounded-md border border-input dark-input px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring" />
+          <div id="suggestedTags" class="flex flex-wrap gap-2 mt-2"></div>
+        </div>
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-400">Note</label>
+          <textarea id="editNoteInput" rows="3" placeholder="addNoteInfo..."
+            class="flex w-full rounded-md border border-input dark-input px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring resize-none"></textarea>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-3 p-5 border-t border-border bg-muted/30">
+        <button onclick="closeEditModal()"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent h-9 px-5">
+          Cancel
+        </button>
+        <button onclick="submitEditInfo()"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 btn-primary h-9 px-5">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Token Modal -->
+  <div id="addModal" class="hidden fixed inset-0 z-50 dark-modal-overlay flex items-center justify-center p-4">
+    <div class="dark-modal rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
+      <div class="flex items-center justify-between p-5 border-b border-white/5">
+        <h3 class="text-lg font-semibold">Add Token</h3>
+        <button onclick="closeAddModal()" class="text-gray-400 hover:text-foreground transition-colors">
+          <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-400">Token Type</label>
+          <select id="addTokenType"
+            class="flex h-9 w-full rounded-md border border-input dark-input px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring">
+            <option value="sso">SSO</option>
+            <option value="ssoSuper">SuperSSO</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-400">Token List <span class="text-gray-400">(one per line
+              item(s))</span></label>
+          <textarea id="addTokenList" rows="12" placeholder="Please enter token，one per line item(s)"
+            class="flex w-full rounded-md border border-input dark-input px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring font-mono resize-none"></textarea>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-3 p-5 border-t border-border bg-muted/30">
+        <button onclick="closeAddModal()"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent h-9 px-5">
+          Cancel
+        </button>
+        <button onclick="submitAddTokens()"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 btn-primary h-9 px-5">
+          add
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allTokens = [], filteredTokens = [], selectedTokens = new Set(), allTagsList = [];
+    const $ = (id) => document.getElementById(id),
+      checkAuth = () => { const t = localStorage.getItem('adminToken'); return t || (location.href = '/login', null), t },
+      apiRequest = async (url, opts = {}) => { const t = checkAuth(); if (!t) return null; const r = await fetch(url, { ...opts, headers: { ...opts.headers, Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' } }); return r.status === 401 ? (localStorage.removeItem('adminToken'), location.href = '/login', null) : r },
+      loadStats = async () => { try { const r = await apiRequest('/api/stats'); if (!r) return; const d = await r.json(); if (d.success) { const s = d.data; $('statTotal').textContent = s.total || 0;['Unused', 'Limited', 'Expired', 'Active'].forEach((k, i) => $(`stat${k}`).textContent = (s.normal?.[k.toLowerCase()] || 0) + (s.super?.[k.toLowerCase()] || 0)) } } catch (e) { console.error('Failed to load statistics:', e) } },
+      calcRemaining = () => { let n = 0, h = 0; allTokens.forEach(t => { if (t.remaining_queries > 0) n += t.remaining_queries; if (t.heavy_remaining_queries > 0) h += t.heavy_remaining_queries }); return { normal: n, heavy: h, total: n + h } },
+      loadTokens = async () => { try { const r = await apiRequest('/api/tokens'); if (!r) return; const d = await r.json(); d.success && (allTokens = d.data.map(t => ({ ...t, tags: t.tags || [], note: t.note || '' })), filteredTokens = allTokens, selectedTokens.clear(), renderTokens(), updateRemaining(), await loadAllTags()) } catch (e) { console.error('Failed to load list:', e) } },
+      updateRemaining = () => { const r = calcRemaining(); const chatTotal = r.total; const imageTotal = Math.floor(chatTotal / 2); $('statChatRemaining').textContent = chatTotal === 0 ? '-' : chatTotal.toLocaleString(); $('statImageRemaining').textContent = imageTotal === 0 ? '-' : imageTotal.toLocaleString(); $('statVideoRemaining').textContent = 'N/A' }
+
+    const renderTokens = () => { const tb = $('tokenTableBody'), es = $('emptyState'), ss = { 'Unused': 'bg-muted text-gray-400', 'Rate Limited': 'bg-orange-50 text-orange-700 border-orange-200', 'Invalid': 'bg-destructive/10 text-destructive border-destructive/20', 'Active': 'bg-green-50 text-green-700 border-green-200' }, ts = { sso: 'badge-sso border', ssoSuper: 'badge-super border' }, tl = { sso: 'SSO', ssoSuper: 'SuperSSO' }; if (!filteredTokens.length) { tb.innerHTML = ''; es.classList.remove('hidden'); $('selectAll').checked = false; return updateBatchActions() } es.classList.add('hidden'); tb.innerHTML = filteredTokens.map(t => { const tagsHtml = t.tags && t.tags.length ? t.tags.map(tag => `<span class="inline-flex items-center rounded px-1.5 py-0.5 text-xs bg-gray-100 text-gray-700">${tag}</span>`).join(' ') : '<span class="text-xs text-gray-400">-</span>'; const noteHtml = t.note && t.note.length ? `<span class="text-xs text-gray-700" title="${t.note}">${t.note.length > 20 ? t.note.substring(0, 20) + '...' : t.note}</span>` : '<span class="text-xs text-gray-400">-</span>'; return `<tr class="transition-colors"><td class="py-2.5 px-3 align-middle w-12"><input type="checkbox" class="token-checkbox h-3.5 w-3.5 rounded border border-input focus:ring-1 focus:ring-ring" data-token="${t.token}" data-type="${t.token_type}" ${selectedTokens.has(t.token) ? 'checked' : ''} onchange="toggleToken('${t.token}')"></td><td class="py-2.5 px-3 align-middle w-80"><div class="flex items-center gap-2"><span class="font-mono text-xs">${t.token.substring(0, 30)}...</span><button onclick="copyToken('${t.token.replace(/'/g, "\\'")}',event)" class="inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent h-6 w-6" title="Copycomplete Token"><svg class="h-3 w-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div></td><td class="py-2.5 px-3 align-middle w-20"><span class="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium border ${ts[t.token_type]}">${tl[t.token_type]}</span></td><td class="py-2.5 px-3 align-middle w-20"><span class="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium border ${ss[t.status]}">${t.status}</span></td><td class="py-2.5 px-3 align-middle w-20 text-xs tabular-nums">${t.remaining_queries === -1 ? '-' : t.remaining_queries}</td><td class="py-2.5 px-3 align-middle w-20 text-xs tabular-nums">${t.heavy_remaining_queries === -1 ? '-' : t.heavy_remaining_queries}</td><td class="py-2.5 px-3 align-middle w-32"><div class="flex flex-wrap gap-1">${tagsHtml}</div></td><td class="py-2.5 px-3 align-middle w-40">${noteHtml}</td><td class="py-2.5 px-3 align-middle w-32 text-xs text-gray-400">${t.created_time ? new Date(t.created_time).toLocaleString('zh-CN', { dateStyle: 'short', timeStyle: 'short' }) : '-'}</td><td class="py-2.5 px-3 align-middle text-right w-28 sticky-right"><div class="flex items-center justify-end gap-1"><button onclick="testToken('${t.token}','${t.token_type}')" class="inline-flex items-center justify-center rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-blue-50 hover:text-blue-700 h-7 w-7" title="TestToken"><svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></button><button onclick="editToken('${t.token}','${t.token_type}')" class="inline-flex items-center justify-center rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground h-7 w-7" title="Edit Info"><svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button><button onclick="deleteToken('${t.token}','${t.token_type}')" class="inline-flex items-center justify-center rounded-md text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-destructive/10 hover:text-destructive h-7 w-7" title="Delete"><svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>` }).join(''); updateBatchActions() },
+      toggleToken = t => selectedTokens[selectedTokens.has(t) ? 'delete' : 'add'](t) || updateBatchActions(),
+      toggleSelectAll = () => { const sa = $('selectAll'); sa.checked ? filteredTokens.forEach(t => selectedTokens.add(t.token)) : selectedTokens.clear(); renderTokens() },
+      updateBatchActions = () => { const ba = $('batchActions'), sc = $('selectedCount'), c = selectedTokens.size; ba.classList[c > 0 ? 'add' : 'remove']('flex'); ba.classList[c > 0 ? 'remove' : 'add']('hidden'); c > 0 && (sc.textContent = `Selected ${c} item`); $('selectAll').checked = filteredTokens.length > 0 && c === filteredTokens.length },
+      filterTokens = () => { const tf = $('filterType').value, sf = $('filterStatus').value, tagf = $('filterTag').value; filteredTokens = allTokens.filter(t => (tf === 'all' || t.token_type === tf) && (sf === 'all' || t.status === sf) && (tagf === 'all' || t.tags && t.tags.includes(tagf))); selectedTokens.clear(); renderTokens() },
+      loadAllTags = async () => { try { const r = await apiRequest('/api/tokens/tags/all'); if (!r) return; const d = await r.json(); if (d.success) { allTagsList = d.data; const tagFilter = $('filterTag'); const currentValue = tagFilter.value; tagFilter.innerHTML = '<option value="all">All Tags</option>' + allTagsList.map(tag => `<option value="${tag}">${tag}</option>`).join(''); tagFilter.value = currentValue } } catch (e) { console.error('LoadingTagsListFailed:', e) } },
+      refreshTokens = async () => { await loadTokens(); await loadStats() },
+      openAddModal = () => $('addModal').classList.remove('hidden'),
+      closeAddModal = () => { $('addModal').classList.add('hidden'); $('addTokenList').value = '' },
+      deleteToken = async (t, tt) => { if (!confirm('OKtoDeletethis item(s) Token ??')) return; try { const r = await apiRequest('/api/tokens/delete', { method: 'POST', body: JSON.stringify({ tokens: [t], token_type: tt }) }); if (!r) return; const d = await r.json(); d.success ? await refreshTokens() : showToast('DeleteFailed: ' + (d.error || 'Unknown error'), 'error') } catch (e) { showToast('DeleteFailed: ' + e.message, 'error') } },
+      batchDelete = async () => { if (!selectedTokens.size || !confirm(`OKtoDeleteselected ${selectedTokens.size}  item(s) Token ??thisActionscannotRestore!`)) return; const tbt = { sso: [], ssoSuper: [] }; document.querySelectorAll('.token-checkbox:checked').forEach(cb => tbt[cb.dataset.type].push(cb.dataset.token)); try { const ps = [];['sso', 'ssoSuper'].forEach(k => tbt[k].length && ps.push(apiRequest('/api/tokens/delete', { method: 'POST', body: JSON.stringify({ tokens: tbt[k], token_type: k }) }))); await Promise.all(ps); await refreshTokens() } catch (e) { showToast('Batch DeleteFailed: ' + e.message, 'error') } },
+      submitAddTokens = async () => { const tt = $('addTokenType').value, tks = $('addTokenList').value.split('\n').map(t => t.trim()).filter(t => t); if (!tks.length) return showToast('Please enter at least one item(s) Token', 'error'); try { const r = await apiRequest('/api/tokens/add', { method: 'POST', body: JSON.stringify({ tokens: tks, token_type: tt }) }); if (!r) return; const d = await r.json(); d.success ? (closeAddModal(), await refreshTokens()) : showToast('Failed to add: ' + (d.error || 'Unknown error'), 'error') } catch (e) { showToast('Failed to add: ' + e.message, 'error') } },
+      copyToken = async (t, e) => { e.stopPropagation(); try { await navigator.clipboard.writeText(t); showToast('Token Copied to clipboard', 'success') } catch (err) { console.error('CopyFailed:', err); showToast('CopyFailed,please manuallyCopy', 'error') } }
+
+    let currentEditToken = '', currentEditTokenType = '';
+    editToken = (token, tokenType) => { currentEditToken = token; currentEditTokenType = tokenType; const tokenData = allTokens.find(t => t.token === token); const currentTags = tokenData?.tags || []; const currentNote = tokenData?.note || ''; $('editTokenInput').value = token.substring(0, 50) + '...'; $('editTagsInput').value = currentTags.join(', '); $('editNoteInput').value = currentNote; const suggestedContainer = $('suggestedTags'); suggestedContainer.innerHTML = ''; if (allTagsList.length > 0) { suggestedContainer.innerHTML = '<div class="text-xs text-gray-400 mb-1">commonly usedTags:</div>' + allTagsList.map(tag => `<button onclick="addTagToInput('${tag}')" class="inline-flex items-center rounded px-2 py-1 text-xs bg-muted hover:bg-accent transition-colors">${tag}</button>`).join('') } $('editTagsModal').classList.remove('hidden') },
+      closeEditModal = () => { $('editTagsModal').classList.add('hidden'); currentEditToken = ''; currentEditTokenType = '' },
+      addTagToInput = (tag) => { const input = $('editTagsInput'); const currentValue = input.value.trim(); const tags = currentValue ? currentValue.split(',').map(t => t.trim()) : []; if (!tags.includes(tag)) { tags.push(tag); input.value = tags.join(', ') } },
+      submitEditInfo = async () => { if (!currentEditToken) return; const tagsInput = $('editTagsInput').value; const note = $('editNoteInput').value.trim(); const tags = tagsInput.split(',').map(t => t.trim()).filter(t => t); const promises = []; promises.push(apiRequest('/api/tokens/tags', { method: 'POST', body: JSON.stringify({ token: currentEditToken, token_type: currentEditTokenType, tags }) })); promises.push(apiRequest('/api/tokens/note', { method: 'POST', body: JSON.stringify({ token: currentEditToken, token_type: currentEditTokenType, note }) })); try { const results = await Promise.all(promises); const allSuccess = results.every(r => r && r.ok); if (allSuccess) { closeEditModal(); await refreshTokens(); showToast('Info updated successfully', 'success') } else { showToast('partialFailed to update，Please retry', 'error') } } catch (e) { showToast('Failed to update: ' + e.message, 'error') } }
+
+    testToken = async (token, tokenType) => { const btn = event.target.closest('button'); const originalHtml = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<svg class="h-3.5 w-3.5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>'; try { const r = await apiRequest('/api/tokens/test', { method: 'POST', body: JSON.stringify({ token, token_type: tokenType }) }); if (!r) return; const d = await r.json(); if (d.success && d.data.valid) { showToast(`TokenValid！Remaining: ${d.data.remaining_queries === -1 ? 'Unlimited' : d.data.remaining_queries}times`, 'success'); await refreshTokens() } else { const errMsgs = { expired: 'TokenalreadyInvalid (401Error)', blocked: 'Server isblock，please try again laterorchangeIP', limited: 'Tokenalreadyrate limited' }; showToast(errMsgs[d.data?.error_type] || 'TokenNoneactive or alreadyInvalid', 'error') } } catch (e) { showToast('TestFailed: ' + e.message, 'error') } finally { btn.disabled = false; btn.innerHTML = originalHtml } }
+
+    const exportSelected = () => { if (!selectedTokens.size) return showToast('please first select toExport Token', 'error'); const sd = allTokens.filter(t => selectedTokens.has(t.token)), csv = [['Token', 'Type', 'Status', 'NormalcallRemaining', 'PremiumcallRemaining', 'Created'].join(','), ...sd.map(t => [`"${t.token}"`, t.token_type === 'sso' ? 'SSO' : 'SuperSSO', t.status, t.remaining_queries === -1 ? 'Unused' : t.remaining_queries, t.heavy_remaining_queries === -1 ? 'Unused' : t.heavy_remaining_queries, `"${t.created_time ? new Date(t.created_time).toLocaleString('zh-CN') : '-'}"`].join(','))].join('\n'), l = document.createElement('a'); l.href = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })); l.download = `grok_tokens_${new Date().toISOString().slice(0, 10)}.csv`; l.style.display = 'none'; document.body.appendChild(l); l.click(); document.body.removeChild(l); URL.revokeObjectURL(l.href); showToast(`alreadyExport ${selectedTokens.size}  item(s) Token`, 'success') }
+    showToast = (m, t = 'info') => { const d = document.createElement('div'), bc = { success: 'bg-emerald-500', error: 'bg-red-500', info: 'bg-cyan-600' }; d.className = `fixed bottom-4 right-4 ${bc[t] || bc.info} text-white px-4 py-2.5 rounded-lg shadow-lg text-sm font-medium z-50 animate-slide-up`; d.textContent = m; document.body.appendChild(d); setTimeout(() => { d.style.opacity = '0'; d.style.transition = 'opacity .3s'; setTimeout(() => d.parentNode && document.body.removeChild(d), 300) }, 2000) }
+    logout = async () => { if (!confirm('OKtoLogoutlogin??')) return; try { await apiRequest('/api/logout', { method: 'POST' }) } catch (e) { console.error('Logout failed:', e) } finally { localStorage.removeItem('adminToken'); location.href = '/login' } },
+      switchTab = t => { const cap = n => n.charAt(0).toUpperCase() + n.slice(1);['tokens', 'settings'].forEach(n => { const isActive = n === t; $(`panel${cap(n)}`).classList.toggle('hidden', !isActive); const tab = $(`tab${cap(n)}`); tab.classList.toggle('active', isActive) }); t === 'settings' && loadSettings() },
+      updateCacheProxyReadonly = () => { const proxyUrl = $('cfgProxyUrl').value.trim(), cacheProxyInput = $('cfgCacheProxyUrl'); if (proxyUrl) { cacheProxyInput.readOnly = false; cacheProxyInput.classList.remove('bg-muted'); cacheProxyInput.placeholder = 'socks5://username:password@127.0.0.1:7890' } else { cacheProxyInput.readOnly = true; cacheProxyInput.classList.add('bg-muted'); cacheProxyInput.value = ''; cacheProxyInput.placeholder = 'SettingsServiceProxyauto-enabled after' } },
+      updateStatsigIdState = () => { const dynamicToggle = $('cfgDynamicStatsig'), statsigInput = $('cfgStatsigId'); if (dynamicToggle.checked) { statsigInput.disabled = true; statsigInput.classList.add('bg-muted', 'text-gray-400'); statsigInput.placeholder = 'EnabledDynamicgenerate' } else { statsigInput.disabled = false; statsigInput.classList.remove('bg-muted', 'text-gray-400'); statsigInput.placeholder = '' } },
+      loadSettings = async () => { try { const r = await apiRequest('/api/settings'); if (!r) return; const d = await r.json(); if (d.success) { const g = d.data.global, k = d.data.grok; const cfClearance = k.cf_clearance || ''; const cleanCfDisplay = cfClearance.startsWith('cf_clearance=') ? cfClearance.split('cf_clearance=')[1] : cfClearance; $('cfgAdminUser').value = g.admin_username || ''; $('cfgAdminPass').value = ''; $('cfgLogLevel').value = g.log_level || 'DEBUG'; $('cfgImageCacheMaxSize').value = g.image_cache_max_size_mb || 500; $('cfgVideoCacheMaxSize').value = g.video_cache_max_size_mb || 1000; $('cfgImageMode').value = g.image_mode || 'url'; $('cfgBaseUrl').value = g.base_url || ''; $('cfgApiKey').value = k.api_key || ''; $('cfgProxyUrl').value = k.proxy_url || ''; $('cfgProxyPoolUrl').value = k.proxy_pool_url || ''; $('cfgProxyPoolInterval').value = k.proxy_pool_interval || 300; $('cfgCacheProxyUrl').value = k.cache_proxy_url || ''; $('cfgCfClearance').value = cleanCfDisplay; $('cfgStatsigId').value = k.x_statsig_id || ''; $('cfgDynamicStatsig').checked = k.dynamic_statsig !== false; updateStatsigIdState(); $('cfgFilteredTags').value = k.filtered_tags || ''; $('cfgShowThinking').value = k.show_thinking !== false ? 'true' : 'false'; $('cfgTemporary').value = k.temporary !== false ? 'true' : 'false'; $('cfgStreamChunkTimeout').value = k.stream_chunk_timeout || 120; $('cfgStreamFirstResponseTimeout').value = k.stream_first_response_timeout || 30; $('cfgStreamTotalTimeout').value = k.stream_total_timeout || 600; $('cfgRetryStatusCodes').value = (k.retry_status_codes || [401, 429]).join(','); updateCacheProxyReadonly(); await loadCacheSize() } } catch (e) { console.error('Failed to load settings:', e); showToast('Failed to load settings', 'error') } },
+      loadCacheSize = async () => { try { const r = await apiRequest('/api/cache/size'); if (!r) return; const d = await r.json(); if (d.success) { ['image', 'video', 'total'].forEach(t => $(`${t}CacheSize`).value = d.data[`${t}_size`] || '0 MB') } } catch (e) { console.error('Failed to load cache size:', e);['image', 'video', 'total'].forEach(t => $(`${t}CacheSize`).value = '0 MB') } },
+      clearCacheByType = async (type, url, msg) => { if (!confirm(msg)) return; try { const r = await apiRequest(url, { method: 'POST' }); if (!r) return; const d = await r.json(); d.success ? (showToast(`${type}CacheclearDone，alreadyDelete ${d.data.deleted_count || 0}  item(s)File`, 'success'), await loadCacheSize()) : showToast('Failed to clear: ' + (d.error || 'Unknown error'), 'error') } catch (e) { showToast('Failed to clear: ' + e.message, 'error') } },
+      clearImageCache = () => clearCacheByType('Image', '/api/cache/clear/images', 'OKtoclearImage Cache?？thisActionswillDeleteallImage CacheFile！'),
+      clearVideoCache = () => clearCacheByType('Video', '/api/cache/clear/videos', 'OKtoclearVideo Cache?？thisActionswillDeleteallVideo CacheFile！'),
+      clearCache = () => clearCacheByType('', '/api/cache/clear', 'OKtoclearCache?？thisActionswillDelete /data/temp all files in directoryFile！'),
+      saveGlobalSettings = async () => { const gc = { admin_username: $('cfgAdminUser').value, log_level: $('cfgLogLevel').value, image_cache_max_size_mb: parseInt($('cfgImageCacheMaxSize').value) || 500, video_cache_max_size_mb: parseInt($('cfgVideoCacheMaxSize').value) || 1000, image_mode: $('cfgImageMode').value, base_url: $('cfgBaseUrl').value }; if ($('cfgAdminPass').value) gc.admin_password = $('cfgAdminPass').value; try { const r = await apiRequest('/api/settings'); if (!r) return; const d = await r.json(); if (!d.success) return showToast('Failed to load settings', 'error'); const s = await apiRequest('/api/settings', { method: 'POST', body: JSON.stringify({ global_config: gc, grok_config: d.data.grok }) }); if (!s) return; const sd = await s.json(); sd.success ? (showToast('Global SettingsSaveSuccess', 'success'), $('cfgAdminPass').value = '') : showToast('SaveFailed: ' + (sd.error || 'Unknown error'), 'error') } catch (e) { showToast('SaveFailed: ' + e.message, 'error') } },
+      saveGrokSettings = async () => { const pu = $('cfgProxyUrl').value.trim(), cf = $('cfgCfClearance').value.trim(); const cleanCf = cf.startsWith('cf_clearance=') ? cf.split('cf_clearance=')[1] : cf; const retryCodesStr = $('cfgRetryStatusCodes').value.trim(); const retryCodes = retryCodesStr ? retryCodesStr.split(',').map(c => parseInt(c.trim())).filter(c => !isNaN(c)) : [401, 429]; const kc = { api_key: $('cfgApiKey').value, proxy_url: pu, proxy_pool_url: $('cfgProxyPoolUrl').value.trim(), proxy_pool_interval: parseInt($('cfgProxyPoolInterval').value) || 300, cache_proxy_url: pu ? $('cfgCacheProxyUrl').value : '', cf_clearance: cleanCf, x_statsig_id: $('cfgStatsigId').value, dynamic_statsig: $('cfgDynamicStatsig').checked, filtered_tags: $('cfgFilteredTags').value, show_thinking: $('cfgShowThinking').value === 'true', temporary: $('cfgTemporary').value === 'true', stream_chunk_timeout: parseInt($('cfgStreamChunkTimeout').value) || 120, stream_first_response_timeout: parseInt($('cfgStreamFirstResponseTimeout').value) || 30, stream_total_timeout: parseInt($('cfgStreamTotalTimeout').value) || 600, retry_status_codes: retryCodes }; try { const r = await apiRequest('/api/settings'); if (!r) return; const d = await r.json(); if (!d.success) return showToast('Failed to load settings', 'error'); const s = await apiRequest('/api/settings', { method: 'POST', body: JSON.stringify({ global_config: d.data.global, grok_config: kc }) }); if (!s) return; const sd = await s.json(); sd.success ? showToast('GrokconfigureSaveSuccess', 'success') : showToast('SaveFailed: ' + (sd.error || 'Unknown error'), 'error') } catch (e) { showToast('SaveFailed: ' + e.message, 'error') } };
+    updateHoverCardPosition = c => { const t = c.querySelector('.hover-card-trigger'), ct = c.querySelector('.hover-card-content'); if (!t || !ct) return; const { top, bottom } = t.getBoundingClientRect(), h = window.innerHeight; ct.classList.remove('top', 'bottom'); const { visibility: v, opacity: o } = getComputedStyle(ct); Object.assign(ct.style, { visibility: 'hidden', opacity: '1' }); const ch = ct.offsetHeight; Object.assign(ct.style, { visibility: v, opacity: o }); ct.classList.add(top > ch + 10 ? 'top' : h - bottom > ch + 10 ? 'bottom' : 'top') },
+      loadStorageMode = async () => { try { const r = await apiRequest('/api/storage/mode'); if (!r) return; const d = await r.json(); if (d.success) $('storageModeText').textContent = d.data.mode } catch (e) { console.error('Failed to load storage mode:', e) } };
+    window.addEventListener('DOMContentLoaded', () => { checkAuth(); loadStorageMode(); refreshTokens(); setInterval(() => { loadStats(); updateRemaining() }, 30000); $('cfgProxyUrl').addEventListener('input', updateCacheProxyReadonly); $('cfgDynamicStatsig').addEventListener('change', updateStatsigIdState) });
+  </script>
+</body>
+
+</html>

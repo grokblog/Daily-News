@@ -1,0 +1,52 @@
+[
+    {
+        "task": "opening",
+        "dialog": "Which animal and vehicle do you think is the coolest?",
+        "prompt": "An adorable, fluffy baby Cat with a wide-eyed, intensely curious expression and big expressive eyes. It is looking directly into the lens. The animal is pressing its nose very close to the camera lens, creating a funny \"big nose\" perspective. The Convertible Car is parked clearly visible in the background. The baby Cat is wearing a cute Vintage Corduroy Safari Explorer Outfit and a tiny Rainbow Gradient Tiny Satchel Bag. The vehicle has Matte Black with Red Accents details. Render the vehicle with high mechanical accuracy suitable for a miniature scale. The scene takes place on a cobblestone street in a charming European village during a sunny morning with clear blue skies. Extreme close-up with a wide-angle fisheye lens effect. The animal's nose and face dominate the frame, funny and adorable. The vehicle is visible in the distorted background. Sharp focus on the Cat and the vehicle. Cinematic depth of field. Art Style: Hyper Realistic (Cinematic). Aspect Ratio 9:16 (Vertical).",
+        "prompt-video": "make video fun and laught"
+    },
+    {
+        "task": "like",
+        "animal": "Cat",
+        "vehicle": "Supercar",
+        "clothes": "Superhero Cape and Mask",
+        "dialog": [
+            "First there is a Cat in a Superhero Cape and Mask driving his Supercar.",
+            "Hi! I'm competing in this audition. Please vote for me by hitting the like button!"
+        ],
+        "prompt": "An adorable, fluffy baby Cat with a laughing expression and big expressive eyes. It is actively driving the miniature Supercar. The Supercar has an open cabin with a steering wheel. The baby Cat sits confidently in the driver's seat, paws gripping the steering wheel at the 10 and 2 positions.  The baby Cat is wearing a cute Cozy Knitted Wool Superhero Cape and Mask and a tiny Fluffy Sherpa Aviator Goggles. The vehicle has Galaxy Nebula Swirls details. Render the vehicle with high mechanical accuracy suitable for a miniature scale. The scene takes place on a professional race track with bright stadium lights during a bright sunny afternoon. The camera is positioned slightly to the side and front, capturing the full length of the Supercar from the very front tip to the back end. The vehicle is moving diagonally across the frame. Ensure no part of the vehicle is cropped out. Sharp focus on the Cat and the vehicle. Cinematic depth of field. Art Style: Hyper Realistic (Cinematic). Aspect Ratio 9:16 (Vertical)."
+    },
+    {
+        "task": "subscribe",
+        "animal": "Cat",
+        "vehicle": "Bulldozer",
+        "clothes": "Vintage Varsity Letterman Jacket",
+        "dialog": [
+            "The second one is a Cat in a Vintage Varsity Letterman Jacket driving his Bulldozer.",
+            "What's up! I'm auditioning here. Help me win by subscribing to this channel!"
+        ],
+        "prompt": "An adorable, fluffy baby Cat with a laughing expression and big expressive eyes. It is actively driving the miniature Bulldozer. The Bulldozer uses dual control sticks or a yoke. The baby Cat is sitting in the operator's seat, holding the control levers with its paws to command the machine.  The baby Cat is wearing a cute Vibrant Red Tartan Vintage Varsity Letterman Jacket and a tiny Mint Green Binoculars. The vehicle has Carbon Fiber details. Render the vehicle with high mechanical accuracy suitable for a miniature scale. The scene takes place at a busy, playful construction site during a bright sunny afternoon. The camera is positioned slightly to the side and front, capturing the full length of the Bulldozer from the very front tip to the back end. The vehicle is moving diagonally across the frame. Ensure no part of the vehicle is cropped out. Sharp focus on the Cat and the vehicle. Cinematic depth of field. Art Style: Hyper Realistic (Cinematic). Aspect Ratio 9:16 (Vertical)."
+    },
+    {
+        "task": "comment",
+        "animal": "Cat",
+        "vehicle": "Motorcycle",
+        "clothes": "Formal Tuxedo with Bowtie",
+        "dialog": [
+            "in third place there is a Cat in a Formal Tuxedo with Bowtie driving his Motorcycle.",
+            "Hey there! I'm in the audition too. Show your support by dropping a fire emoji comment!"
+        ],
+        "prompt": "An adorable, fluffy baby Cat with a laughing expression and big expressive eyes. It is actively riding the miniature Motorcycle. The Motorcycle features handlebars. The baby Cat sits on a miniature saddle, leaning forward with its paws securely gripping the handlebars to steer.  The baby Cat is wearing a cute High-Vis Orange Safety Formal Tuxedo with Bowtie and a tiny Vibrant Red Tartan Tiny Satchel Bag. The vehicle has Carbon Fiber details. Render the vehicle with high mechanical accuracy suitable for a miniature scale. The scene takes place on a cobblestone street in a charming European village during a golden hour sunset with warm orange lighting. The camera is positioned slightly to the side and front, capturing the full length of the Motorcycle from the very front tip to the back end. The vehicle is moving diagonally across the frame. Ensure no part of the vehicle is cropped out. Sharp focus on the Cat and the vehicle. Cinematic depth of field. Art Style: Hyper Realistic (Cinematic). Aspect Ratio 9:16 (Vertical)."
+    },
+    {
+        "task": "share",
+        "animal": "Cat",
+        "vehicle": "Hot Air Balloon Basket",
+        "clothes": "Formal Tuxedo with Bowtie",
+        "dialog": [
+            "Now the last one, there is a Cat in a Formal Tuxedo with Bowtie driving his Hot Air Balloon Basket.",
+            "Hello! I'm one of the contestants. Vote for me by sharing this video with everyone!"
+        ],
+        "prompt": "An adorable, fluffy baby Cat with a laughing expression and big expressive eyes. It is actively driving the miniature Hot Air Balloon Basket. The Hot Air Balloon Basket has a sturdy woven basket. The baby Cat is standing inside the basket, resting its paws on the rim to look out at the view.  The baby Cat is wearing a cute Shiny Gold Sequin Formal Tuxedo with Bowtie and a tiny Faded Denim Blue Bowtie. The vehicle has Neon Cyber Stripes details. Render the vehicle with high mechanical accuracy suitable for a miniature scale. The scene takes place flying high in the sky above the clouds during a sunny morning with clear blue skies. The camera is positioned slightly to the side and front, capturing the full length of the Hot Air Balloon Basket from the very front tip to the back end. The vehicle is moving diagonally across the frame. Ensure no part of the vehicle is cropped out. Sharp focus on the Cat and the vehicle. Cinematic depth of field. Art Style: Hyper Realistic (Cinematic). Aspect Ratio 9:16 (Vertical)."
+    }
+]
